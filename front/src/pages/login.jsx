@@ -24,10 +24,10 @@ export function Login() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center bg-white h-[100vh] w-full">
+        <div className="flex flex-col items-center justify-center bg-[#faf9f9] h-[100vh] w-full">
             <p className="text-4xl font-bold text-[#4895ef] !mb-4">Smart City</p>
 
-            <div className="flex flex-col items-center justify-start h-100 w-[80%] shadow-lg">
+            <div className="flex flex-col items-center justify-start h-100 w-[80%] shadow-lg bg-white">
                 <h1 className='font-medium text-[26px] !mt-15'>Login</h1>
 
                 <input className='w-[300px] !p-1.5 !mt-5 border-2 border-gray-300' value={user} onChange={(e) => setUser(e.target.value)} placeholder='User' />

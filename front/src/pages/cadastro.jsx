@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export function Cadastro() {
 
@@ -15,23 +15,19 @@ export function Cadastro() {
         confirmarSenha: ''
     });
 
-    // Função que atualiza o estado ao digitar no formulário
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // Função para enviar o formulário e cadastrar o usuário
     const cadastrar = async (e) => {
-        e.preventDefault();  // Previne o comportamento padrão de envio do formulário
+        e.preventDefault();
 
-        // Verifica se as senhas coincidem
         if (formData.senha !== formData.confirmarSenha) {
             alert("As senhas não coincidem!");
             return;
         }
 
         try {
-            // Envia os dados para o backend via POST
             await axios.post('http://127.0.0.1:8000/api/cadastro/', {
                 username: formData.username,
                 email: formData.email,
@@ -41,32 +37,36 @@ export function Cadastro() {
             });
 
             alert("Usuário cadastrado com sucesso!");
-            navigate('/home');  // Redireciona para a página de Home após o cadastro
+            navigate('/home');
         } catch (error) {
-            // Captura e exibe o erro se a requisição falhar
             console.error("Erro ao cadastrar usuário:", error);
             alert("Erro ao cadastrar. Tente novamente.");
         }
     };
 
     return (
-        <div>
-            <h2>Cadastro de Usuário</h2>
-            <form onSubmit={cadastrar}>
+        <div className="flex flex-col items-center justify-center bg-[#faf9f9] h-[100vh] w-full">
+            <p className="text-4xl font-bold text-[#4895ef] !mb-4">Smart City</p>
 
-                <input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Digite o nome de usuário" required />
+            <form onSubmit={cadastrar} className="flex flex-col items-center justify-start h-140 w-[80%] shadow-lg bg-white">
+                <h1 className='font-medium text-[26px] !mt-10'>Cadastro de Usuário</h1>
 
-                <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Digite seu e-mail" required />
+                <div className='flex flex-col items-center justify-cente'>
+                    <input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Digite o nome de usuário" className='w-[300px] !p-1.5 !mt-5 border-2 border-gray-300' required />
 
-                <input type="text" name="telefone" value={formData.telefone} onChange={handleChange} placeholder="Digite seu telefone" />
+                    <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Digite seu e-mail" className='w-[300px] !p-1.5 !mt-5 border-2 border-gray-300' required />
 
-                <input type="date" name="data_nascimento" value={formData.data_nascimento} onChange={handleChange} />
+                    <input type="text" name="telefone" value={formData.telefone} onChange={handleChange} placeholder="Digite seu telefone" className='w-[300px] !p-1.5 !mt-5 border-2 border-gray-300' required />
 
-                <input type="password" name="senha" value={formData.senha} onChange={handleChange} placeholder="Digite a senha" required />
+                    <input type="date" name="data_nascimento" value={formData.data_nascimento} onChange={handleChange} className='w-[300px] !p-1.5 !mt-5 border-2 border-gray-300' />
 
-                <input type="password" name="confirmarSenha" value={formData.confirmarSenha} onChange={handleChange} placeholder="Confirme a senha" required />
+                    <input type="password" name="senha" value={formData.senha} onChange={handleChange} placeholder="Digite a senha" className='w-[300px] !p-1.5 !mt-5 border-2 border-gray-300' required />
 
-                <button type="submit">Cadastrar</button>
+                    <input type="password" name="confirmarSenha" value={formData.confirmarSenha} onChange={handleChange} placeholder="Confirme a senha" className='w-[300px] !p-1.5 !mt-5 border-2 border-gray-300' required />
+                </div>
+
+                <button className='w-[100px] !p-1 !mt-5 bg-[#007bc0] text-white text-[18px] font-medium' type="submit">Cadastrar</button>
+                <h4 className='!mt-3 text-[17px] font-medium'>Já possui uma Conta? <Link to="/" className='text-[#007bc0]'>Fazer Login</Link></h4>
             </form>
         </div>
     );
