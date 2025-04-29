@@ -1,6 +1,6 @@
 from django.http import HttpResponse
-from .models import Contador, Luminosidade,  Temperatura, Umidade
-from .serializer import ContadorSerializer, LuminosidadeSerializer, TemperaturaSerializer, UmidadeSerializer
+from .models import Ambientes, Sensores, Historico
+from .serializer import AmbientesSerializer, SensoresSerializer, HistoricoSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
@@ -10,36 +10,106 @@ from django.contrib.auth.models import User
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
-# ======================= Contador =======================
+# ======================= Ambientes =======================
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
-def listar_contador(request):
+def listar_ambientes(request):
     if request.method == 'GET':
-        queryset = Contador.objects.all()
-        serializer = ContadorSerializer(queryset, many=True)
+        queryset = Ambientes.objects.all()
+        serializer = AmbientesSerializer(queryset, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
-        serializer = ContadorSerializer(data=request.data)
+        serializer = AmbientesSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-class ContadorView(ListCreateAPIView):
-    queryset = Contador.objects.all()
-    serializer_class = ContadorSerializer
+class AmbientesView(ListCreateAPIView):
+    queryset = Ambientes.objects.all()
+    serializer_class = AmbientesSerializer
     permission_classes = [IsAuthenticated]
 
-class ContadorDetailView(RetrieveUpdateDestroyAPIView):
-    queryset = Contador.objects.all()
-    serializer_class = ContadorSerializer
+class AmbientesDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Ambientes.objects.all()
+    serializer_class = AmbientesSerializer
     permission_classes = [IsAuthenticated]
 
-class ContadorSearchView(ListAPIView):
-    queryset = Contador.objects.all()
-    serializer_class = ContadorSerializer
+class AmbientesSearchView(ListAPIView):
+    queryset = Ambientes.objects.all()
+    serializer_class = AmbientesSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = (DjangoFilterBackend, SearchFilter)
-    search_fields = ['inteiro', 'caracteres']
+    search_fields = ['sig', 'descricao', 'ni', 'responsavel']
+
+
+# ======================= Sensores =======================
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def listar_sensores(request):
+    if request.method == 'GET':
+        queryset = Sensores.objects.all()
+        serializer = SensoresSerializer(queryset, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = SensoresSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class SensoresView(ListCreateAPIView):
+    queryset = Sensores.objects.all()
+    serializer_class = SensoresSerializer
+    permission_classes = [IsAuthenticated]
+
+class SensoresDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Sensores.objects.all()
+    serializer_class = SensoresSerializer
+    permission_classes = [IsAuthenticated]
+
+class SensoresSearchView(ListAPIView):
+    queryset = Sensores.objects.all()
+    serializer_class = SensoresSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = (DjangoFilterBackend, SearchFilter)
+    search_fields = ['sensor', 'mac_address', 'unidade_med', 'valor', 'latitude', 'longitude', 'status', 'timestamp',]
+
+
+# ======================= Historico =======================
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def listar_historico(request):
+    if request.method == 'GET':
+        queryset = Historico.objects.all()
+        serializer = HistoricoSerializer(queryset, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = HistoricoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class HistoricoView(ListCreateAPIView):
+    queryset = Historico.objects.all()
+    serializer_class = HistoricoSerializer
+    permission_classes = [IsAuthenticated]
+
+class HistoricoDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Historico.objects.all()
+    serializer_class = HistoricoSerializer
+    permission_classes = [IsAuthenticated]
+
+class HistoricoSearchView(ListAPIView):
+    queryset = Historico.objects.all()
+    serializer_class = HistoricoSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = (DjangoFilterBackend, SearchFilter)
+    search_fields = ['observacoes', 'sensor', 'ambiente']

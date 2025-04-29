@@ -1,22 +1,27 @@
 from rest_framework import serializers
-from .models import Contador, Luminosidade, Temperatura, Umidade
+from .models import Ambientes, Sensores, Historico
 
-class ContadorSerializer(serializers.ModelSerializer):
+class AmbientesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Contador
+        model = Ambientes
         fields = '__all__'
 
-class LuminosidadeSerializer(serializers.ModelSerializer):
+class SensoresSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Luminosidade
+        model = Sensores
         fields = '__all__'
 
-class TemperaturaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Temperatura
-        fields = '__all__'
+class HistoricoSerializer(serializers.ModelSerializer):
+    ambiente = AmbientesSerializer(read_only=True)
+    sensor = SensoresSerializer(read_only=True)
 
-class UmidadeSerializer(serializers.ModelSerializer):
+    ambiente_id = serializers.PrimaryKeyRelatedField(
+        queryset=Ambientes.objects.all(), source='ambiente', write_only=True
+    )
+    sensor_id = serializers.PrimaryKeyRelatedField(
+        queryset=Sensores.objects.all(), source='sensor', write_only=True
+    )
+
     class Meta:
-        model = Umidade
+        model = Historico
         fields = '__all__'
