@@ -4,11 +4,11 @@ import { Navbar } from './components/Navbar'
 import { Login } from './pages/login'
 import { Cadastro } from './pages/cadastro'
 
-import { Contador } from './pages/contador'
+import { Ambiente } from './pages/Ambiente'
 import { Home } from './pages/home'
-import { Luminosidade } from './pages/luminosidade'
-import { Temperatura } from './pages/temperatura'
-import { Umidade } from './pages/umidade'
+import { Sensores } from './pages/sensores'
+import { Historico } from './pages/historico'
+import { Perfil } from './pages/perfil'
 
 import './App.css'
 
@@ -24,11 +24,11 @@ export default function App() {
       {!hideNavbar && <Navbar />}
 
       <Routes>
-        <Route path="/contador" element={<Contador />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/luminosidade" element={<Luminosidade />} />
-        <Route path="/temperatura" element={<Temperatura />} />
-        <Route path="/umidade" element={<Umidade />} />
+        <Route path="/ambiente" element={<Ambiente />} />
+        <Route path="/sensores" element={<Sensores />} />
+        <Route path="/historico" element={<Historico />} />
+        <Route path="/perfil" element={<Perfil />} />
 
         <Route path="/" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />

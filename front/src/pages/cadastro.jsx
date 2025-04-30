@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import imgCadastro from "../assets/imgCadastro.jpg"
 
 export function Cadastro() {
 
@@ -9,8 +10,6 @@ export function Cadastro() {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
-        telefone: '',
-        data_nascimento: '',
         senha: '',
         confirmarSenha: ''
     });
@@ -31,11 +30,12 @@ export function Cadastro() {
             await axios.post('http://127.0.0.1:8000/api/cadastro/', {
                 username: formData.username,
                 email: formData.email,
-                telefone: formData.telefone,
-                data_nascimento: formData.data_nascimento,
                 senha: formData.senha
             });
-
+            
+            localStorage.setItem('token', response.data.access);
+            localStorage.setItem('refresh', response.data.refresh);
+            console.log(response.data.access)
             alert("Usuário cadastrado com sucesso!");
             navigate('/home');
         } catch (error) {
@@ -48,17 +48,14 @@ export function Cadastro() {
         <div className="flex flex-col items-center justify-center bg-[#faf9f9] h-[100vh] w-full">
             <p className="text-4xl font-bold text-[#4895ef] !mb-4">Smart City</p>
 
-            <form onSubmit={cadastrar} className="flex flex-col items-center justify-start h-140 w-[80%] shadow-lg bg-white">
+
+            <form onSubmit={cadastrar} className="flex flex-col items-center justify-start h-112 w-[80%] shadow-lg bg-white">
                 <h1 className='font-medium text-[26px] !mt-10'>Cadastro de Usuário</h1>
 
                 <div className='flex flex-col items-center justify-cente'>
                     <input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Digite o nome de usuário" className='w-[300px] !p-1.5 !mt-5 border-2 border-gray-300' required />
 
                     <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Digite seu e-mail" className='w-[300px] !p-1.5 !mt-5 border-2 border-gray-300' required />
-
-                    <input type="text" name="telefone" value={formData.telefone} onChange={handleChange} placeholder="Digite seu telefone" className='w-[300px] !p-1.5 !mt-5 border-2 border-gray-300' required />
-
-                    <input type="date" name="data_nascimento" value={formData.data_nascimento} onChange={handleChange} className='w-[300px] !p-1.5 !mt-5 border-2 border-gray-300' />
 
                     <input type="password" name="senha" value={formData.senha} onChange={handleChange} placeholder="Digite a senha" className='w-[300px] !p-1.5 !mt-5 border-2 border-gray-300' required />
 

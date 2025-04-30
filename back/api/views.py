@@ -113,3 +113,25 @@ class HistoricoSearchView(ListAPIView):
     permission_classes = [IsAuthenticated]
     filter_backends = (DjangoFilterBackend, SearchFilter)
     search_fields = ['observacoes', 'sensor', 'ambiente']
+
+# ======================= Usuario =======================
+
+@api_view(['POST'])
+def cadastrar_usuario(request):
+    username = request.data.get('username')
+    email = request.data.get('email')
+    senha = request.data.get('senha')
+
+    if not username or not email or not senha:
+        return Response({'erro': 'Preencha todos os campos obrigatórios.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if User.objects.filter(username=username).exists():
+        return Response({'erro': 'Nome de usuário já existe.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if User.objects.filter(email=email).exists():
+        return Response({'erro': 'E-mail já está em uso.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    user = User.objects.create_user(username=username, email=email, password=senha)
+    user.save()
+
+    return Response({'mensagem': 'Usuário cadastrado com sucesso!'}, status=status.HTTP_201_CREATED)
