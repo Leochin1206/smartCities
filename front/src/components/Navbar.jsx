@@ -47,7 +47,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="text-[#4895ef]">
+    <nav className="text-[#3473BA]">
       <div className="sm:hidden !p-4 bg-white shadow-right flex justify-between items-center">
         <div className="text-2xl font-bold">Smart City</div>
         <img
@@ -59,7 +59,7 @@ export function Navbar() {
       </div>
 
       {menuOpen && (
-        <ul className="sm:hidden bg-white px-6 pb-4 flex flex-col gap-4 shadow-md">
+        <ul className="absolute sm:hidden bg-white px-6 pb-4 flex flex-col gap-4 shadow-md top-16 w-full">
           <Link to="/home" onClick={() => setMenuOpen(false)}><li className="hover:shadow-lg hover:scale-105 transition-all !p-2"><p className="!ml-7 text-[18px] font-medium">Home</p></li></Link>
           <Link to="/ambiente" onClick={() => setMenuOpen(false)}><li className="hover:shadow-lg hover:scale-105 transition-all !p-2"><p className="!ml-7 text-[18px] font-medium">Ambiente</p></li></Link>
           <Link to="/sensores" onClick={() => setMenuOpen(false)}><li className="hover:shadow-lg hover:scale-105 transition-all !p-2"><p className="!ml-7 text-[18px] font-medium">Sensores</p></li></Link>
@@ -69,22 +69,22 @@ export function Navbar() {
         </ul>
       )}
 
-      <div className="hidden sm:flex flex-col w-40 h-[100vh] bg-white shadow-right !p-4 fixed top-0">
-        <div className="text-2xl font-bold sm:!mb-10">Smart City</div>
+      <div className="hidden sm:flex flex-col w-39 h-[100vh] bg-white shadow-right !p-4 fixed top-0">
+        <div className="sm:text-[21px] md:text-[24px] font-bold sm:!mb-10">Smart City</div>
         <ul className="flex flex-col gap-5">
           {linkNav.map((navRender, index) => (
             <Link key={index} to={navRender.link}>
               <li className="flex flex-col items-center justify-center hover:shadow-lg hover:scale-105 transition-all px-4 py-2 !p-1 rounded-md cursor-pointer">
-                <img src={navRender.img} alt={navRender.altImg} />
-                <p className="text-[20px] !mt-0.5 font-medium">{navRender.titulo}</p>
+                <img src={navRender.img} alt={navRender.altImg} className="sm:w-[30px] md:w-[41px]"/>
+                <p className="sm:text-[15px] md:text-[17px] !mt-0.5 font-medium">{navRender.titulo}</p>
               </li>
             </Link>
           ))}
 
           <Link to="/" onClick={() => { localStorage.removeItem("token"); setMenuOpen(false) }}>
             <li className="flex flex-col items-center justify-center hover:shadow-lg hover:scale-105 transition-all px-4 py-2 !p-1 rounded-md cursor-pointer">
-              <img src={logout} alt="Icone para localizar a saída da plataforma" />
-              <p className="text-[20px] !mt-0.5 font-medium">Sair</p>
+              <img src={logout} alt="Icone para localizar a saída da plataforma" className="sm:w-[30px] md:w-[41px]"/>
+              <p className="sm:text-[15px] md:text-[17px] !mt-0.5 font-medium">Sair</p>
             </li>
           </Link>
         </ul>

@@ -118,20 +118,36 @@ class HistoricoSearchView(ListAPIView):
 
 @api_view(['POST'])
 def cadastrar_usuario(request):
-    username = request.data.get('username')
-    email = request.data.get('email')
-    senha = request.data.get('senha')
+    dados_recebidos = request.data
 
-    if not username or not email or not senha:
-        return Response({'erro': 'Preencha todos os campos obrigatórios.'}, status=status.HTTP_400_BAD_REQUEST)
+    username = dados_recebidos.get('username', '').strip()
+    email = dados_recebidos.get('email', '').strip()
+    senha = dados_recebidos.get('password', '').strip()
+
+    erros = {}
+
+    if not username:
+        erros['username'] = 'O campo nome de usuário é obrigatório.'
+
+    if not email:
+        erros['email'] = 'O campo e-mail é obrigatório.'
+
+    if not senha:
+        erros['senha'] = 'O campo senha é obrigatório.'
+
+    if erros:
+        return Response({'erros': erros}, status=status.HTTP_400_BAD_REQUEST)
 
     if User.objects.filter(username=username).exists():
-        return Response({'erro': 'Nome de usuário já existe.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'username': 'Nome de usuário já existe.'}, status=status.HTTP_400_BAD_REQUEST)
 
     if User.objects.filter(email=email).exists():
-        return Response({'erro': 'E-mail já está em uso.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'email': 'E-mail já está em uso.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    user = User.objects.create_user(username=username, email=email, password=senha)
-    user.save()
+    try:
+        user = User.objects.create_user(username=username, email=email, password=senha)
+        user.save()
+    except Exception as e:
+        return Response({'erro': f'Erro ao criar usuário: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response({'mensagem': 'Usuário cadastrado com sucesso!'}, status=status.HTTP_201_CREATED)

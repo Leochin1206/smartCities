@@ -27,7 +27,7 @@ export function Login() {
 
     return (
         <div className="flex flex-col items-center justify-center bg-[#faf9f9] h-[100vh] w-full">
-            <p className="text-4xl font-bold text-[#4895ef] !mb-4">Smart City</p>
+            <p className="text-4xl font-bold text-[#3473BA] !mb-10">Smart City</p>
 
             <div className="flex flex-col items-center justify-start h-90 w-[80%] lg:w-[87%] 2xl:w-[70%] lg:h-120 shadow-lg xl:h-150 bg-white lg:flex-row">
                 <div>

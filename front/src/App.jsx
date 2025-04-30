@@ -4,7 +4,7 @@ import { Navbar } from './components/Navbar'
 import { Login } from './pages/login'
 import { Cadastro } from './pages/cadastro'
 
-import { Ambiente } from './pages/Ambiente'
+import { Ambiente } from './pages/ambiente'
 import { Home } from './pages/home'
 import { Sensores } from './pages/sensores'
 import { Historico } from './pages/historico'
