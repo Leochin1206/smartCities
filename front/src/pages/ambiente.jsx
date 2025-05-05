@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { ModalAdd } from "../components/modalAdd";
 import { ModalEditDel } from "../components/modalEditDel";
-import menu from "../assets/menu.svg"
+import { ModalFilter } from "../components/modalFilter";
+import { GraficoQnt } from "../components/GraficoQnt";
+import menu from "../assets/settings.svg"
 import add from "../assets/add.svg"
 import filter from "../assets/filter.svg"
 import search from "../assets/search.svg"
@@ -10,7 +12,9 @@ import search from "../assets/search.svg"
 export function Ambiente() {
 
     const [dados, setDados] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
     const [modalAdd, setModalAdd] = useState(false);
+    const [modalFilter, setModalFilter] = useState(false);
     const [modalDeleteEdit, setModalDeleteEdit] = useState(false);
     const [ambienteSelecionado, setAmbienteSelecionado] = useState(null);
 
@@ -33,13 +37,21 @@ export function Ambiente() {
         fetchData();
     }, [token]);
 
+    const ambientesFiltrados = dados.filter((ambiente) =>
+        ambiente.descricao.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
-        <div className="bg-[#faf9f9]">
+        <div className="flex flex-col items-center justify-center bg-[#faf9f9]">
+
+            <div className="flex items-center justify-center !mt-5 !mb-4 w-[81%] sm:w-[86%] sm:!pl-40">
+                <GraficoQnt total={dados.length} max={200} title="Ambientes cadastrados" />
+            </div>
 
             <div className="grid place-items-center grid-cols-1 lg:grid-cols-2 gap-3 w-full sm:!pl-40 lg:!pl-42">
 
                 <div className="flex items-center justify-between w-[81%] lg:w-[96%]">
-                    
+
                     <div className="flex gap-3">
 
                         <img src={add} alt="Ícone para criar novo Ambiente"
@@ -48,42 +60,42 @@ export function Ambiente() {
 
                         <img src={filter} alt="Ícone para filtrar Ambiente"
                             className="bg-white shadow-md rounded !p-1 lg:!p-2 hover:shadow-lg transition-all cursor-pointer"
-                            onClick={() => setModalSearch(true)} />
+                            onClick={() => setModalFilter(true)} />
 
                     </div>
 
                     <div className="flex items-center bg-white shadow-md rounded w-[67%] sm:w-[60%] lg:w-[65%] h-12 lg:h-14">
                         <img src={search} alt="Ícone da barra de pesquisa" className="w-5 h-5 !ml-5" />
-                        <input type="text" placeholder="Buscar..." className="!ml-2 w-full outline-none text-sm" />
+                        <input
+                            type="text" placeholder="Buscar..." className="!ml-2 w-full outline-none text-sm"
+                            value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                     </div>
 
                 </div>
 
-                <ModalAdd isOpen={modalAdd} onClose={() => setModalAdd(false)} />
+                <ModalAdd isOpen={modalAdd} onClose={() => setModalAdd(false)} titulo="Ambientes" url="ambientes" campos={["sig", "descricao", "ni", "responsavel"]} />
+                <ModalFilter isOpen={modalFilter} onClose={() => setModalFilter(false)} url="ambientes" campos={["sig", "ni", "responsavel"]} />
 
-                {dados.map((ambientes) => (
+                {ambientesFiltrados.map((ambientes) => (
                     <div
                         key={ambientes.id}
-                        className="bg-white shadow-md rounded-xl !p-3 w-[80%] lg:w-[95%] flex justify-between items-center hover:shadow-lg transition-all"
+                        className="flex justify-between items-center bg-white shadow-md rounded-xl !p-3 w-[80%] hover:shadow-lg transition-all"
                     >
                         <div>
                             <p className="text-sm text-gray-500">SIG #{ambientes.sig}</p>
                             <p className="text-lg font-semibold text-gray-800">{ambientes.descricao}</p>
                         </div>
 
-                        <img
-                            src={menu}
-                            alt="Menu"
-                            onClick={() => {
-                                setAmbienteSelecionado(ordemServico);
-                                setModalDeleteEdit(true);
-                            }}
-                            className="cursor-pointer w-[35px] h-auto"
-                        />
+                        <img src={menu} alt="Menu"
+                            onClick={() => { setAmbienteSelecionado(ambientes); setModalDeleteEdit(true); }}
+                            className="cursor-pointer w-[35px] h-auto" />
+
                     </div>
                 ))}
-            </div>
 
+                <ModalEditDel isOpen={modalDeleteEdit} onClose={() => setModalDeleteEdit(false)} url="ambi" dados={ambienteSelecionado} camposUpdate={["sig", "descricao", "ni", "responsavel"]} />
+            </div>
         </div>
-    )
+    );
 }

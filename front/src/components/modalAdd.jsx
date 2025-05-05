@@ -70,8 +70,8 @@ export function ModalAdd({ isOpen, onClose, titulo, url, campos = [], relacoes =
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500/30 z-50">
-            <div className="bg-white rounded-lg p-6 w-[700px] shadow-lg">
-                <h2 className="text-xl font-bold mb-4 text-gray-800">Adicionar novo {titulo}</h2>
+            <div className="bg-white rounded-lg !p-6 w-[400px] shadow-lg">
+                <h2 className="text-xl font-bold !mb-4 text-gray-800">Adicionar novo {titulo}</h2>
 
                 <form onSubmit={handleSubmit}>
                     {campos.map((campo) => (
@@ -84,7 +84,7 @@ export function ModalAdd({ isOpen, onClose, titulo, url, campos = [], relacoes =
                                     name={campo}
                                     value={formData[campo]}
                                     onChange={handleChange}
-                                    className="w-full p-2 border border-gray-300 rounded-md"
+                                    className="w-full !p-2 border border-gray-300 rounded-md"
                                     required
                                 >
                                     <option value="">Selecione</option>
@@ -96,14 +96,13 @@ export function ModalAdd({ isOpen, onClose, titulo, url, campos = [], relacoes =
                                 </select>
                             ) : (
                                 <input
-                                    type={(campo === "ni" || campo === "localizacao" || campo === "sig") ? "number" : 
-                                        (campo === "data_abertura" || campo === "data_encerramento") ? "date" : "text"}
+                                    type={(campo === "latitude" || campo === "longitude") ? "number" : "text"}
                                     id={campo}
                                     name={campo}
                                     placeholder={campo}
                                     value={formData[campo]}
                                     onChange={handleChange}
-                                    className="w-full p-2 border border-gray-300 rounded-md"
+                                    className="w-full !p-2 border border-gray-300 rounded-md !mb-2"
                                     required
                                 />
                             )}
@@ -111,8 +110,8 @@ export function ModalAdd({ isOpen, onClose, titulo, url, campos = [], relacoes =
                     ))}
 
                     <div className="flex justify-end gap-4">
-                        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Salvar</button>
-                        <button type="button" onClick={onClose} className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md">Cancelar</button>
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md !p-2">Salvar</button>
+                        <button type="button" onClick={onClose} className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md !p-2">Cancelar</button>
                     </div>
                 </form>
             </div>
