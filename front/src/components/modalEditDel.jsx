@@ -9,12 +9,17 @@ export function ModalEditDel({ isOpen, onClose, url, camposUpdate = [], dados, r
     const token = localStorage.getItem('token');
 
     useEffect(() => {
-        setFormData(dados);
+        const dadosComIds = {
+            ...dados,
+            ambiente_id: dados.ambiente?.id,
+            sensor_id: dados.sensor?.id,
+        };
+        setFormData(dadosComIds);
 
         const fetchRelacoes = async () => {
             const novasOpcoes = {};
             for (const campo in relacoes) {
-                const { url: relUrl, label } = relacoes[campo];
+                const { url: relUrl } = relacoes[campo];
                 try {
                     const res = await axios.get(`http://127.0.0.1:8000/api/${relUrl}`, {
                         headers: { Authorization: `Bearer ${token}` },
@@ -71,36 +76,19 @@ export function ModalEditDel({ isOpen, onClose, url, camposUpdate = [], dados, r
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500/30 z-50">
-            <div className="bg-white rounded-lg !p-6 w-[400px] shadow-lg">
+            <div className="bg-white rounded-lg !p-6 w-[400px] sm:w-[510px] lg:w-[640px] xl:w-[800px] shadow-lg">
                 <h2 className="text-xl font-bold !mb-4 text-gray-800">Editar</h2>
 
                 {camposUpdate.map((campo) => (
                     <div key={campo} className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">{campo}</label>
-
-                        {relacoes[campo] ? (
-                            <select
-                                name={campo}
-                                value={formData[campo] || ""}
-                                onChange={handleChange}
-                                className="w-full !p-2 border border-gray-300 rounded-md"
-                            >
-                                <option value="">Selecione</option>
-                                {opcoesRelacoes[campo]?.map((opcao) => (
-                                    <option key={opcao.id} value={opcao.id}>
-                                        {opcao[relacoes[campo].label]}
-                                    </option>
-                                ))}
-                            </select>
-                        ) : (
-                            <input
-                                type="text"
-                                name={campo}
-                                value={formData[campo] || ""}
-                                onChange={handleChange}
-                                className="w-full !p-2 !mb-2 border border-gray-300 rounded-md"
-                            />
-                        )}
+                        <input
+                            type="text"
+                            name={campo}
+                            value={formData[campo] || ""}
+                            onChange={handleChange}
+                            className="w-full !p-2 !mb-2 border border-gray-300 rounded-md"
+                        />
                     </div>
                 ))}
 

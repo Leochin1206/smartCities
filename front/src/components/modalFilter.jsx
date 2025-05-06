@@ -9,16 +9,6 @@ export function ModalFilter({ isOpen, onClose, url, campos = [] }) {
     const [resultados, setResultados] = useState([]);
     const token = localStorage.getItem('token');
 
-    const handleCheckboxChange = (campo) => {
-        if (campo === campoSelecionado) {
-            setCampoSelecionado(null);
-            setValorFiltro("");
-        } else {
-            setCampoSelecionado(campo);
-            setValorFiltro("");
-        }
-    };
-
     const handleFiltrar = async () => {
         if (!valorFiltro.trim()) return;
 
@@ -42,23 +32,27 @@ export function ModalFilter({ isOpen, onClose, url, campos = [] }) {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500/30 z-50">
-            <div className="bg-white rounded-lg !p-6 w-[400px] overflow-y-auto shadow-lg">
+            <div className="bg-white rounded-lg !p-6 w-[400px] sm:w-[510px] lg:w-[640px] xl:w-[800px] overflow-y-auto shadow-lg">
                 <h2 className="text-xl font-bold !mb-2 text-gray-800">Filtro</h2>
 
-                <div className="flex">
-                    {campos.map((campo) => (
-                        <div key={campo} className="flex w-[25%] !mb-2">
-                            <label className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    checked={campo === campoSelecionado}
-                                    onChange={() => handleCheckboxChange(campo)}
-                                />
-                                <span className="!ml-1.5 text-sm font-medium text-gray-700">{campo}</span>
-                            </label>
-                        </div>
-                    ))}
+                <div className="!mb-4">
+                    <label htmlFor="campo-select" className="block !mb-1 text-sm font-medium text-gray-700">
+                        Filtrar por:
+                    </label>
+                    <select
+                        id="campo-select"
+                        value={campoSelecionado}
+                        onChange={(e) => setCampoSelecionado(e.target.value)}
+                        className="w-full px-3 py-2 rounded shadow focus:outline-none !p-2 focus:ring-2 focus:ring-blue-500"
+                    >
+                        {campos.map((campo) => (
+                            <option key={campo} value={campo}>
+                                {campo}
+                            </option>
+                        ))}
+                    </select>
                 </div>
+
 
                 <input
                     type="text"

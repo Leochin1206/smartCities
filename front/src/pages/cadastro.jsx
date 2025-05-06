@@ -21,9 +21,6 @@ export function Cadastro() {
         e.preventDefault();
 
         try {
-            console.log("username: ", formData.username)
-            console.log("email: ", formData.email)
-            console.log("senha: ", formData.senha)
             const response = await axios.post('http://127.0.0.1:8000/api/cadastro/', {
                 username: formData.username,
                 email: formData.email,

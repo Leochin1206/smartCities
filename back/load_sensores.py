@@ -1,13 +1,15 @@
 import os
 import django
-import pandas as pd
-from api.models import Sensores  
+import pandas as pd  # não esqueça de importar o pandas!
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'back.settings')
+# Configure o ambiente do Django antes de importar os modelos
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'back.settings')  # Corrigido para refletir sua estrutura
 django.setup()
 
+from api.models import Sensores
+
 planilhas = {
-    'Contador.xlsx':        ('Contador de Pessoas', 'Un'),
+    'contador.xlsx':        ('Contador de Pessoas', 'Un'),
     'luminosidade.xlsx':    ('Luminosidade', 'Lux'),
     'temperatura.xlsx':     ('Temperatura', '°C'),
     'umidade.xlsx':         ('Umidade', '%'),
@@ -36,9 +38,12 @@ for nome_arquivo, (tipo_sensor, unidade) in planilhas.items():
                 unidade_med=unidade,
                 valor=str(row['valor']),
                 latitude=float(row['latitude']),
-                longitude=float(row['longitude'])
+                longitude=float(row['longitude']),
+                status=str(row['status']),
+                timestamp=str(row['timestamp'])
             )
             inseridos += 1
         except Exception as e:
             print(f"Erro na linha {index + 2} do arquivo {nome_arquivo}: {e}")
 
+print(f"\nTotal de sensores inseridos: {inseridos}")

@@ -10,13 +10,13 @@ class Sensores(models.Model):
     sensor = models.CharField(max_length=255)
     mac_address = models.CharField(max_length=255)
     unidade_med = models.CharField(max_length=255)
-    valor = models.CharField(max_length=255)
     latitude = models.FloatField()
     longitude = models.FloatField()
     status = models.CharField(max_length=255)
-    timestamp = models.CharField(max_length=255)
+
 
 class Historico(models.Model):
-    observacoes = models.TextField()
     sensor = models.ForeignKey(Sensores, on_delete=models.CASCADE)
     ambiente = models.ForeignKey(Ambientes, on_delete=models.CASCADE)
+    valor = models.CharField(max_length=255)
+    timestamp = models.CharField(max_length=255)

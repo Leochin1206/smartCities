@@ -59,7 +59,7 @@ export function Navbar() {
       </div>
 
       {menuOpen && (
-        <ul className="absolute sm:hidden bg-white px-6 pb-4 flex flex-col gap-4 shadow-md top-16 w-full">
+        <ul className="z-20 absolute sm:hidden bg-white px-6 pb-4 flex flex-col gap-4 shadow-md top-16 w-full">
           <Link to="/home" onClick={() => setMenuOpen(false)}><li className="hover:shadow-lg hover:scale-105 transition-all !p-2"><p className="!ml-7 text-[18px] font-medium">Home</p></li></Link>
           <Link to="/ambiente" onClick={() => setMenuOpen(false)}><li className="hover:shadow-lg hover:scale-105 transition-all !p-2"><p className="!ml-7 text-[18px] font-medium">Ambiente</p></li></Link>
           <Link to="/sensores" onClick={() => setMenuOpen(false)}><li className="hover:shadow-lg hover:scale-105 transition-all !p-2"><p className="!ml-7 text-[18px] font-medium">Sensores</p></li></Link>

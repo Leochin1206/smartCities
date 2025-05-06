@@ -1,10 +1,12 @@
 import os
 import django
+
+# Configuração do ambiente Django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "back.settings")
+django.setup()
+
 import pandas as pd
 from api.models import Ambientes
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'back.settings')
-django.setup()
 
 print("Lendo planilha...")
 excel_path = os.path.join(os.path.dirname(__file__), 'Ambientes.xlsx')
