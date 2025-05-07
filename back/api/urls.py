@@ -3,7 +3,7 @@ from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshVie
 from .views import listar_ambientes, AmbientesView, AmbientesDetailView, AmbientesSearchView
 from .views import listar_sensores, SensoresView, SensoresDetailView, SensoresSearchView
 from .views import listar_historico, HistoricoView, HistoricoDetailView, HistoricoSearchView
-from .views import cadastrar_usuario
+from .views import cadastrar_usuario, importar_planilhas
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -25,5 +25,6 @@ urlpatterns = [
     path('hist/<int:pk>', HistoricoDetailView.as_view()),
     path('historico/search/', HistoricoSearchView.as_view()),
 
-    path('cadastro/', cadastrar_usuario, name='cadastro')
+    path('cadastro/', cadastrar_usuario, name='cadastro'),
+    path('importar/', importar_planilhas, name='importar_planilhas')
 ]

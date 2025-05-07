@@ -10,6 +10,10 @@ from django.contrib.auth.models import User
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework_simplejwt.tokens import RefreshToken
+import os
+import django
+from django.http import JsonResponse
+import pandas as pd  
 
 # ======================= Ambientes =======================
 
@@ -78,7 +82,7 @@ class SensoresSearchView(ListAPIView):
     serializer_class = SensoresSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = (DjangoFilterBackend, SearchFilter)
-    search_fields = ['sensor', 'mac_address', 'unidade_med', 'valor', 'latitude', 'longitude', 'status', 'timestamp',]
+    search_fields = ['sensor', 'mac_address', 'unidade_med', 'latitude', 'longitude', 'status']
 
 
 # ======================= Historico =======================
@@ -113,7 +117,16 @@ class HistoricoSearchView(ListAPIView):
     serializer_class = HistoricoSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = (DjangoFilterBackend, SearchFilter)
-    search_fields = ['observacoes', 'sensor', 'ambiente']
+    search_fields = [
+        'sensor__sensor',
+        'sensor__mac_address',
+        'sensor__id',
+        'ambiente__descricao',
+        'ambiente__id',
+        'timestamp',
+        'valor'
+    ]
+
 
 # ======================= Usuario =======================
 
@@ -157,3 +170,74 @@ def cadastrar_usuario(request):
 
     except Exception as e:
         return Response({'erro': f'Erro ao criar usuário: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'back.settings') 
+django.setup()
+
+from api.models import Sensores, Ambientes
+
+def importar_planilhas(request):
+    planilhas = {
+        'contador.xlsx':        ('Contador de Pessoas', 'Un'),
+        'luminosidade.xlsx':    ('Luminosidade', 'Lux'),
+        'temperatura.xlsx':     ('Temperatura', '°C'),
+        'umidade.xlsx':         ('Umidade', '%'),
+    }
+
+    BASE_PATH = os.path.dirname(os.path.dirname(__file__)) 
+    inseridos = 0
+
+    for nome_arquivo, (tipo_sensor, unidade) in planilhas.items():
+        caminho = os.path.join(BASE_PATH, nome_arquivo)
+
+        try:
+            df = pd.read_excel(caminho)
+        except Exception as e:
+            print(f"Erro ao abrir {nome_arquivo}: {e}")
+            continue
+
+        for index, row in df.iterrows():
+            try:
+                obj = Sensores.objects.create(
+                    sensor=tipo_sensor,
+                    mac_address=str(row['mac_address']),
+                    unidade_med=unidade,
+                    latitude=float(row['latitude']),
+                    longitude=float(row['longitude']),
+                    status=str(row['status']).strip().lower() == 'ativo',
+                )
+                inseridos += 1
+            except Exception as e:
+                print(f"Erro na linha {index + 2} do arquivo {nome_arquivo}: {e}")
+
+    print(f"\nTotal de sensores inseridos: {inseridos}")
+
+    excel_path = os.path.join(BASE_PATH, 'Ambientes.xlsx')
+    print(f"Caminho absoluto do arquivo Ambientes.xlsx: {os.path.abspath(excel_path)}")
+
+    if not os.path.exists(excel_path):
+        print(f"Arquivo não encontrado: {excel_path}")
+        return JsonResponse({"erro": f"Arquivo não encontrado: {excel_path}"})
+
+    try:
+        df = pd.read_excel(excel_path)
+    except Exception as e:
+        print(f"Erro ao abrir Ambientes.xlsx: {e}")
+        return JsonResponse({"erro": f"Erro ao abrir Ambientes.xlsx: {e}"})
+
+    contador = 0
+    for index, row in df.iterrows():
+        try:
+            obj = Ambientes.objects.create(
+                sig=str(row['sig']),
+                descricao=str(row['descricao']),
+                ni=str(row['ni']),
+                responsavel=str(row['responsavel'])
+            )
+            contador += 1
+        except Exception as e:
+            print(f"Erro na linha {index + 1}: {e}")
+
+    print(f"Inserções concluídas: {contador}")
+    
+    return JsonResponse({"sucesso": f"{inseridos} sensores e {contador} ambientes foram inseridos."})

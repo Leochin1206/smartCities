@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ModalAdd } from "../components/modalAdd";
 import { ModalEditDel } from "../components/modalEditDel";
 import { ModalFilter } from "../components/modalFilter";
-import { GraficoQnt } from "../components/GraficoQnt";
+import { GraficoQnt } from "../components/graficoQnt";
 import menu from "../assets/settings.svg"
 import add from "../assets/add.svg"
 import filter from "../assets/filter.svg"
@@ -78,8 +78,8 @@ export function Sensores() {
 
             <div className="grid place-items-center grid-cols-1 lg:grid-cols-2 gap-3 w-full sm:!pl-40 lg:!pl-42">
 
-                <ModalAdd isOpen={modalAdd} onClose={() => setModalAdd(false)} titulo="Sensores" url="sensores" campos={["sensor", "mac_address", "unidade_med", "valor", "latitude", "longitude", "status", "timestamp"]} />
-                <ModalFilter isOpen={modalFilter} onClose={() => setModalFilter(false)} url="sensores" campos={["sensor", "mac_address", "unidade_med", "valor", "latitude", "longitude", "status", "timestamp"]} />
+                <ModalAdd isOpen={modalAdd} onClose={() => setModalAdd(false)} titulo="Sensores" url="sensores" campos={["sensor", "mac_address", "unidade_med", "latitude", "longitude", "status"]} />
+                <ModalFilter isOpen={modalFilter} onClose={() => setModalFilter(false)} url="sensores" campos={["sensor", "mac_address", "unidade_med", "latitude", "longitude", "status"]} />
 
                 {/* Inicio - Renderização dos dados */}
                 {sensoresFiltrados.map((sensores) => (
@@ -100,7 +100,7 @@ export function Sensores() {
                 ))}
                 {/* -- Fim -- */}
 
-                <ModalEditDel isOpen={modalDeleteEdit} onClose={() => setModalDeleteEdit(false)} url="sens" dados={sensorSelecionado} camposUpdate={["sensor", "mac_address", "unidade_med", "valor", "latitude", "longitude", "status", "timestamp"]} />
+                <ModalEditDel isOpen={modalDeleteEdit} onClose={() => setModalDeleteEdit(false)} url="sens" dados={sensorSelecionado} camposUpdate={["sensor", "mac_address", "unidade_med", "latitude", "longitude", "status"]} />
             </div>
         </div>
     );

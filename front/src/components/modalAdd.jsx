@@ -62,7 +62,9 @@ export function ModalAdd({ isOpen, onClose, titulo, url, campos = []}) {
                             </label>
 
                             <input
-                                type={(campo === "latitude" || campo === "longitude") ? "number" : "text"}
+                                type={(campo === "latitude" || campo === "longitude" || campo === "sig" || campo === "valor") ? "number" : 
+                                    (campo === "timestamp") ? "date" : 
+                                    (campo === "status") ? "boolean" :"text"}
                                 id={campo}
                                 name={campo}
                                 placeholder={campo}

@@ -4,7 +4,7 @@ import axios from "axios";
 export function ModalFilter({ isOpen, onClose, url, campos = [] }) {
     if (!isOpen) return null;
 
-    const [campoSelecionado, setCampoSelecionado] = useState(null);
+    const [campoSelecionado, setCampoSelecionado] = useState("");
     const [valorFiltro, setValorFiltro] = useState("");
     const [resultados, setResultados] = useState([]);
     const token = localStorage.getItem('token');
@@ -20,7 +20,9 @@ export function ModalFilter({ isOpen, onClose, url, campos = [] }) {
 
             const filtrado = campoSelecionado
                 ? response.data.filter(item =>
-                    item[campoSelecionado]?.toLowerCase().includes(valorFiltro.toLowerCase())
+                    String(item[campoSelecionado] ?? '')
+                        .toLowerCase()
+                        .includes(valorFiltro.toLowerCase())
                 )
                 : response.data;
 
@@ -52,7 +54,6 @@ export function ModalFilter({ isOpen, onClose, url, campos = [] }) {
                         ))}
                     </select>
                 </div>
-
 
                 <input
                     type="text"

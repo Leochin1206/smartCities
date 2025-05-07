@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ModalAdd } from "../components/modalAdd";
 import { ModalEditDel } from "../components/modalEditDel";
 import { ModalFilter } from "../components/modalFilter";
-import { GraficoQnt } from "../components/GraficoQnt";
+import { GraficoQnt } from "../components/graficoQnt";
 import menu from "../assets/settings.svg"
 import add from "../assets/add.svg"
 import filter from "../assets/filter.svg"
@@ -38,7 +38,7 @@ export function Historico() {
     }, [token]);
 
     const historicosFiltrados = dados.filter((historico) =>
-        historico.observacoes.toLowerCase().includes(searchTerm.toLowerCase())
+        String(historico.valor).toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
@@ -79,8 +79,8 @@ export function Historico() {
             <div className="grid place-items-center grid-cols-1 lg:grid-cols-2 gap-3 w-full sm:!pl-40 lg:!pl-42">
 
                 <ModalAdd
-                    isOpen={modalAdd} onClose={() => setModalAdd(false)} titulo="Histórico" url="historico" campos={["observacoes", "ambiente_id", "sensor_id"]} />
-                <ModalFilter isOpen={modalFilter} onClose={() => setModalFilter(false)} url="historico" campos={["observacoes", "ambiente_id", "sensor_id"]} />
+                    isOpen={modalAdd} onClose={() => setModalAdd(false)} titulo="Histórico" url="historico" campos={["ambiente_id", "sensor_id", "timestamp", "valor"]} />
+                <ModalFilter isOpen={modalFilter} onClose={() => setModalFilter(false)} url="historico" campos={["ambiente_id", "sensor_id", "timestamp", "valor"]} />
 
                 {/* Inicio - Renderização dos dados */}
                 {historicosFiltrados.map((historico) => (
@@ -90,7 +90,7 @@ export function Historico() {
                     >
                         <div>
                             <p className="text-sm text-gray-500">ID #{historico.id}</p>
-                            <p className="text-lg font-semibold text-gray-800">{historico.observacoes}</p>
+                            <p className="text-lg font-semibold text-gray-800">{historico.valor}</p>
                         </div>
 
                         <img src={menu} alt="Menu"
@@ -101,7 +101,7 @@ export function Historico() {
                 ))}
                 {/* -- Fim -- */}
 
-                <ModalEditDel isOpen={modalDeleteEdit} onClose={() => setModalDeleteEdit(false)} url="hist" dados={historicoSelecionado} camposUpdate={["observacoes", "ambiente_id", "sensor_id"]}/>
+                <ModalEditDel isOpen={modalDeleteEdit} onClose={() => setModalDeleteEdit(false)} url="hist" dados={historicoSelecionado} camposUpdate={["ambiente_id", "sensor_id", "timestamp", "valor"]}/>
             </div>
         </div>
     );

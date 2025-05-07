@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ModalAdd } from "../components/modalAdd";
 import { ModalEditDel } from "../components/modalEditDel";
 import { ModalFilter } from "../components/modalFilter";
-import { GraficoQnt } from "../components/GraficoQnt";
+import { GraficoQnt } from "../components/graficoQnt";
 import menu from "../assets/settings.svg"
 import add from "../assets/add.svg"
 import filter from "../assets/filter.svg"
