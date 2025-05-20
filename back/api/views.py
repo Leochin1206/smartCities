@@ -47,7 +47,7 @@ class AmbientesSearchView(ListAPIView):
     serializer_class = AmbientesSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = (DjangoFilterBackend, SearchFilter)
-    search_fields = ['sig', 'descricao', 'ni', 'responsavel']
+    search_fields = ['id', 'sig', 'descricao', 'ni', 'responsavel']
 
 
 # ======================= Sensores =======================
@@ -82,7 +82,7 @@ class SensoresSearchView(ListAPIView):
     serializer_class = SensoresSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = (DjangoFilterBackend, SearchFilter)
-    search_fields = ['sensor', 'mac_address', 'unidade_med', 'latitude', 'longitude', 'status']
+    search_fields = ['id', 'sensor', 'mac_address', 'unidade_med', 'latitude', 'longitude', 'status']
 
 
 # ======================= Historico =======================
@@ -118,6 +118,7 @@ class HistoricoSearchView(ListAPIView):
     permission_classes = [IsAuthenticated]
     filter_backends = (DjangoFilterBackend, SearchFilter)
     search_fields = [
+        'id',
         'sensor__sensor',
         'sensor__mac_address',
         'sensor__id',

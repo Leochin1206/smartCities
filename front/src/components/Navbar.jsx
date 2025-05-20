@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import React, { useState } from "react";
 
 import menu from "../assets/menu.svg";
-import account from "../assets/account.svg"
 import history from "../assets/history.svg"
 import home from "../assets/home.svg"
 import location from "../assets/location.svg"
@@ -37,13 +36,7 @@ export function Navbar() {
       link: "/historico",
       altImg: "Icone para localizar a página de Histórico",
       titulo: "Histórico"
-    },
-    {
-      img: account,
-      link: "/perfil",
-      altImg: "Icone para localizar a página de Perfil",
-      titulo: "Perfil"
-    },
+    }
   ];
 
   return (
@@ -64,7 +57,6 @@ export function Navbar() {
           <Link to="/ambiente" onClick={() => setMenuOpen(false)}><li className="hover:shadow-lg hover:scale-105 transition-all !p-2"><p className="!ml-7 text-[18px] font-medium">Ambiente</p></li></Link>
           <Link to="/sensores" onClick={() => setMenuOpen(false)}><li className="hover:shadow-lg hover:scale-105 transition-all !p-2"><p className="!ml-7 text-[18px] font-medium">Sensores</p></li></Link>
           <Link to="/historico" onClick={() => setMenuOpen(false)}><li className="hover:shadow-lg hover:scale-105 transition-all !p-2"><p className="!ml-7 text-[18px] font-medium">Historico</p></li></Link>
-          <Link to="/perfil" onClick={() => setMenuOpen(false)}><li className="hover:shadow-lg hover:scale-105 transition-all !p-2"><p className="!ml-7 text-[18px] font-medium">Perfil</p></li></Link>
           <Link to="/" onClick={() => { localStorage.removeItem("token"); setMenuOpen(false) }}><li className="hover:shadow-lg hover:scale-105 transition-all !p-2"><p className="!ml-7 text-[18px] font-medium">Sair</p></li></Link>
         </ul>
       )}

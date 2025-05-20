@@ -8,7 +8,6 @@ import { Ambiente } from './pages/ambiente'
 import { Home } from './pages/home'
 import { Sensores } from './pages/sensores'
 import { Historico } from './pages/historico'
-import { Perfil } from './pages/perfil'
 
 import './App.css'
 
@@ -28,7 +27,6 @@ export default function App() {
         <Route path="/ambiente" element={<Ambiente />} />
         <Route path="/sensores" element={<Sensores />} />
         <Route path="/historico" element={<Historico />} />
-        <Route path="/perfil" element={<Perfil />} />
 
         <Route path="/" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />

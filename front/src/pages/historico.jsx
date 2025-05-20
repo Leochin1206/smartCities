@@ -80,7 +80,7 @@ export function Historico() {
 
                 <ModalAdd
                     isOpen={modalAdd} onClose={() => setModalAdd(false)} titulo="Histórico" url="historico" campos={["ambiente_id", "sensor_id", "timestamp", "valor"]} />
-                <ModalFilter isOpen={modalFilter} onClose={() => setModalFilter(false)} url="historico" campos={["ambiente_id", "sensor_id", "timestamp", "valor"]} />
+                <ModalFilter isOpen={modalFilter} onClose={() => setModalFilter(false)} url="historico" campos={["id", "ambiente_id", "sensor_id", "timestamp", "valor"]} />
 
                 {/* Inicio - Renderização dos dados */}
                 {historicosFiltrados.map((historico) => (

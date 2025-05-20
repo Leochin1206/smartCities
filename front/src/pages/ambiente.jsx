@@ -80,7 +80,7 @@ export function Ambiente() {
             <div className="grid place-items-center grid-cols-1 lg:grid-cols-2 gap-3 w-full sm:!pl-40 lg:!pl-42">
 
                 <ModalAdd isOpen={modalAdd} onClose={() => setModalAdd(false)} titulo="Ambientes" url="ambientes" campos={["sig", "descricao", "ni", "responsavel"]} />
-                <ModalFilter isOpen={modalFilter} onClose={() => setModalFilter(false)} url="ambientes" campos={["sig", "ni", "responsavel"]} />
+                <ModalFilter isOpen={modalFilter} onClose={() => setModalFilter(false)} url="ambientes" campos={["id", "sig", "ni", "responsavel"]} />
 
                 {/* Inicio - Renderização dos dados */}
                 {ambientesFiltrados.map((ambientes) => (

@@ -79,7 +79,7 @@ export function Sensores() {
             <div className="grid place-items-center grid-cols-1 lg:grid-cols-2 gap-3 w-full sm:!pl-40 lg:!pl-42">
 
                 <ModalAdd isOpen={modalAdd} onClose={() => setModalAdd(false)} titulo="Sensores" url="sensores" campos={["sensor", "mac_address", "unidade_med", "latitude", "longitude", "status"]} />
-                <ModalFilter isOpen={modalFilter} onClose={() => setModalFilter(false)} url="sensores" campos={["sensor", "mac_address", "unidade_med", "latitude", "longitude", "status"]} />
+                <ModalFilter isOpen={modalFilter} onClose={() => setModalFilter(false)} url="sensores" campos={["id", "sensor", "mac_address", "unidade_med", "latitude", "longitude", "status"]} />
 
                 {/* Inicio - Renderização dos dados */}
                 {sensoresFiltrados.map((sensores) => (
