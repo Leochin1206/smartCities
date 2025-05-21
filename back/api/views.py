@@ -14,6 +14,7 @@ import os
 import django
 from django.http import JsonResponse
 import pandas as pd  
+from django.utils import timezone
 
 # ======================= Ambientes =======================
 
@@ -175,8 +176,6 @@ def cadastrar_usuario(request):
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'back.settings') 
 django.setup()
 
-from api.models import Sensores, Ambientes
-
 def importar_planilhas(request):
     planilhas = {
         'contador.xlsx':        ('Contador de Pessoas', 'Un'),
@@ -188,6 +187,7 @@ def importar_planilhas(request):
     BASE_PATH = os.path.dirname(os.path.dirname(__file__)) 
     inseridos = 0
 
+    # Importar sensores
     for nome_arquivo, (tipo_sensor, unidade) in planilhas.items():
         caminho = os.path.join(BASE_PATH, nome_arquivo)
 
@@ -199,7 +199,7 @@ def importar_planilhas(request):
 
         for index, row in df.iterrows():
             try:
-                obj = Sensores.objects.create(
+                Sensores.objects.create(
                     sensor=tipo_sensor,
                     mac_address=str(row['mac_address']),
                     unidade_med=unidade,
@@ -213,23 +213,20 @@ def importar_planilhas(request):
 
     print(f"\nTotal de sensores inseridos: {inseridos}")
 
+    # Importar ambientes
     excel_path = os.path.join(BASE_PATH, 'Ambientes.xlsx')
-    print(f"Caminho absoluto do arquivo Ambientes.xlsx: {os.path.abspath(excel_path)}")
-
     if not os.path.exists(excel_path):
-        print(f"Arquivo não encontrado: {excel_path}")
         return JsonResponse({"erro": f"Arquivo não encontrado: {excel_path}"})
 
     try:
         df = pd.read_excel(excel_path)
     except Exception as e:
-        print(f"Erro ao abrir Ambientes.xlsx: {e}")
         return JsonResponse({"erro": f"Erro ao abrir Ambientes.xlsx: {e}"})
 
     contador = 0
     for index, row in df.iterrows():
         try:
-            obj = Ambientes.objects.create(
+            Ambientes.objects.create(
                 sig=str(row['sig']),
                 descricao=str(row['descricao']),
                 ni=str(row['ni']),
@@ -237,8 +234,38 @@ def importar_planilhas(request):
             )
             contador += 1
         except Exception as e:
-            print(f"Erro na linha {index + 1}: {e}")
+            print(f"Erro na linha {index + 1} do Ambientes.xlsx: {e}")
 
-    print(f"Inserções concluídas: {contador}")
-    
-    return JsonResponse({"sucesso": f"{inseridos} sensores e {contador} ambientes foram inseridos."})
+    print(f"Inserções de ambientes concluídas: {contador}")
+
+    # Importar histórico
+    historico_path = os.path.join(BASE_PATH, 'histórico.xlsx')
+    historico_inseridos = 0
+
+    if os.path.exists(historico_path):
+        try:
+            df_historico = pd.read_excel(historico_path)
+            print("Colunas lidas de histórico.xlsx:", df_historico.columns)
+        except Exception as e:
+            print(f"Erro ao abrir histórico.xlsx: {e}")
+        else:
+            for index, row in df_historico.iterrows():
+                try:
+                    sensor = Sensores.objects.get(pk=int(row['sensor']))
+                    ambiente = Ambientes.objects.get(pk=int(row['ambiente']))
+
+                    Historico.objects.create(
+                        sensor=sensor,
+                        ambiente=ambiente,
+                        valor=float(row['valor']),
+                        timestamp=pd.to_datetime(row['timestamp'], dayfirst=True, errors='coerce') or timezone.now()
+                    )
+                    historico_inseridos += 1
+                except Exception as e:
+                    print(f"Erro na linha {index + 2} do histórico.xlsx: {e}")
+    else:
+        print(f"Arquivo histórico.xlsx não encontrado em {historico_path}")
+
+    return JsonResponse({
+        "sucesso": f"{inseridos} sensores, {contador} ambientes e {historico_inseridos} registros históricos foram inseridos."
+    })
