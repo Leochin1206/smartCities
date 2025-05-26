@@ -46,7 +46,7 @@ export function Historico() {
 
             {/* Inicio - Gráfico de Quantidade de Cadastros */}
             <div className="z-10 flex items-center justify-center !mt-5 !mb-4 w-[81%] sm:w-[86%] lg:w-[97%] xl:w-[1160px] 2xl:w-[1255px] sm:!pl-40">
-                <GraficoQnt total={dados.length} max={200} title="Históricos Cadastrados" />
+                <GraficoQnt total={dados.length} max={20000} title="Históricos Cadastrados" />
             </div>
             {/* -- Fim -- */}
 
@@ -90,7 +90,12 @@ export function Historico() {
                     >
                         <div>
                             <p className="text-sm text-gray-500">ID #{historico.id}</p>
-                            <p className="text-lg font-semibold text-gray-800">{historico.valor}</p>
+                            <p className="text-lg font-semibold text-gray-800">{historico.sensor.sensor} | {historico.sensor.sensor === "Contador de Pessoas" ? Number(historico.valor).toFixed(0) : Number(historico.valor).toFixed(2)}
+                            {historico.sensor.sensor === "Contador de Pessoas" ? "Un": 
+                            historico.sensor.sensor === "Luminosidade"? "Lux" : 
+                            historico.sensor.sensor === "Temperatura" ? "°C": 
+                            historico.sensor.sensor === "Umidade"? "%" :
+                            ""}</p>
                         </div>
 
                         <img src={menu} alt="Menu"
