@@ -173,7 +173,7 @@ def cadastrar_usuario(request):
     except Exception as e:
         return Response({'erro': f'Erro ao criar usuário: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'back.settings') 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'back.settings')
 django.setup()
 
 def importar_planilhas(request):
@@ -190,7 +190,6 @@ def importar_planilhas(request):
     # Importar sensores
     for nome_arquivo, (tipo_sensor, unidade) in planilhas.items():
         caminho = os.path.join(BASE_PATH, nome_arquivo)
-
         try:
             df = pd.read_excel(caminho)
         except Exception as e:
@@ -238,34 +237,40 @@ def importar_planilhas(request):
 
     print(f"Inserções de ambientes concluídas: {contador}")
 
-    # Importar histórico
-    historico_path = os.path.join(BASE_PATH, 'histórico.xlsx')
-    historico_inseridos = 0
+    # Função auxiliar para importar históricos
+    def importar_historico_excel(nome_arquivo):
+        caminho = os.path.join(BASE_PATH, nome_arquivo)
+        inseridos = 0
 
-    if os.path.exists(historico_path):
-        try:
-            df_historico = pd.read_excel(historico_path)
-            print("Colunas lidas de histórico.xlsx:", df_historico.columns)
-        except Exception as e:
-            print(f"Erro ao abrir histórico.xlsx: {e}")
-        else:
-            for index, row in df_historico.iterrows():
+        if os.path.exists(caminho):
+            try:
+                df = pd.read_excel(caminho)
+                print(f"Colunas lidas de {nome_arquivo}:", df.columns)
+            except Exception as e:
+                print(f"Erro ao abrir {nome_arquivo}: {e}")
+                return 0
+
+            for index, row in df.iterrows():
                 try:
                     sensor = Sensores.objects.get(pk=int(row['sensor']))
                     ambiente = Ambientes.objects.get(pk=int(row['ambiente']))
-
                     Historico.objects.create(
                         sensor=sensor,
                         ambiente=ambiente,
                         valor=float(row['valor']),
                         timestamp=pd.to_datetime(row['timestamp'], dayfirst=True, errors='coerce') or timezone.now()
                     )
-                    historico_inseridos += 1
+                    inseridos += 1
                 except Exception as e:
-                    print(f"Erro na linha {index + 2} do histórico.xlsx: {e}")
-    else:
-        print(f"Arquivo histórico.xlsx não encontrado em {historico_path}")
+                    print(f"Erro na linha {index + 2} do {nome_arquivo}: {e}")
+        else:
+            print(f"Arquivo {nome_arquivo} não encontrado em {caminho}")
+        return inseridos
+
+    total_historico = 0
+    for nome in ['histórico.xlsx', 'historicoLux.xlsx', 'historicoTemp.xlsx', 'historicoUmid.xlsx']:
+        total_historico += importar_historico_excel(nome)
 
     return JsonResponse({
-        "sucesso": f"{inseridos} sensores, {contador} ambientes e {historico_inseridos} registros históricos foram inseridos."
+        "sucesso": f"{inseridos} sensores, {contador} ambientes e {total_historico} registros históricos foram inseridos."
     })
