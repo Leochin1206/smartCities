@@ -8,6 +8,9 @@ import menu from "../assets/settings.svg"
 import add from "../assets/add.svg"
 import filter from "../assets/filter.svg"
 import search from "../assets/search.svg"
+import exportIcon from "../assets/export.svg"
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 export function Ambiente() {
 
@@ -42,6 +45,19 @@ export function Ambiente() {
         ambiente.descricao.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const exportarParaExcel = () => {
+        if (!dados || dados.length === 0) return;
+
+        const ws = XLSX.utils.json_to_sheet(dados);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Ambientes");
+
+        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+
+        saveAs(blob, "ambientes.xlsx");
+    };
+
     return (
         <div className="flex flex-col items-center justify-center bg-[#faf9f9]">
 
@@ -56,13 +72,17 @@ export function Ambiente() {
 
                 <div className="flex gap-3">
 
-                    <img src={add} alt="Ícone para criar novo Ambiente"
+                    <img src={add} alt="Ícone para criar novo Ambiente" 
                         className="bg-white shadow-md rounded !p-1 lg:!p-2 hover:shadow-lg transition-all cursor-pointer"
                         onClick={() => setModalAdd(true)} />
 
                     <img src={filter} alt="Ícone para filtrar Ambiente"
                         className="bg-white shadow-md rounded !p-1 lg:!p-2 hover:shadow-lg transition-all cursor-pointer"
                         onClick={() => setModalFilter(true)} />
+
+                    <img src={exportIcon} alt="Ícone para baixar dados"
+                        className="bg-white shadow-md rounded !p-1 lg:!p-2 hover:shadow-lg transition-all cursor-pointer"
+                        onClick={exportarParaExcel} />
 
                 </div>
 

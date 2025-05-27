@@ -129,6 +129,37 @@ class HistoricoSearchView(ListAPIView):
         'valor'
     ]
 
+# ======================= Filtros =======================
+
+class FiltroDuploView(ListAPIView):
+    serializer_class = HistoricoSerializer
+
+    def get_queryset(self):
+        data = self.request.query_params.get("data")
+        sensor = self.request.query_params.get("sensor")
+
+        if data and sensor:
+            return Historico.objects.filter(
+                timestamp__date=data,
+                sensor__sensor=sensor
+            )
+        return Historico.objects.none()
+    
+class FiltroTriploView(ListAPIView):
+    serializer_class = HistoricoSerializer
+
+    def get_queryset(self):
+        data = self.request.query_params.get("data")
+        sensor = self.request.query_params.get("sensor")
+        horario = self.request.query_params.get("horario")  
+        if data and sensor and horario:
+            return Historico.objects.filter(
+                timestamp__date=data,
+                sensor__sensor=sensor,
+                timestamp__time=horario
+            )
+        return Historico.objects.none()
+
 
 # ======================= Usuario =======================
 
@@ -172,7 +203,10 @@ def cadastrar_usuario(request):
 
     except Exception as e:
         return Response({'erro': f'Erro ao criar usuário: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+
+# ======================= Importar planilhas =======================
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'back.settings')
 django.setup()
 
