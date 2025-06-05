@@ -59,29 +59,15 @@ export function Cadastro() {
                     <h1 className='font-medium text-[26px] !mt-7'>Cadastro de Usuário</h1>
 
                     <div className='flex flex-col items-center justify-cente'>
-                        <input
-                            id="usernameCadastro"
-                            type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            placeholder="Seu nome de usuário"
-                            className='w-full xl:!p-2 !p-1.5 border-2 border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500' // Estilo unificado e responsivo
-                            required
-                        />
+                        <input id="usernameCadastro" type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Seu nome de usuário"
+                            className='w-[300px] md:w-[450px] xl:w-[500px] xl:!p-2 !p-1.5 !mt-4 border-2 border-gray-300' required/>
 
-                        <input
-                            id="emailCadastro"
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="seuemail@exemplo.com"
-                            className='w-full xl:!p-2 !p-1.5 border-2 border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500'
-                            required
-                        />
-                        <input type="password" name="senha" value={formData.senha} onChange={handleChange} placeholder="Digite a senha" className='w-[300px] md:w-[450px] xl:w-[500px] xl:!p-2 !p-1.5 !mt-4 border-2 border-gray-300' required />
+                        <input id="emailCadastro" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="seuemail@exemplo.com"
+                            className='w-[300px] md:w-[450px] xl:w-[500px] xl:!p-2 !p-1.5 !mt-4 border-2 border-gray-300' required/>
 
+                        <input id="senhaCadastro" type="password"
+                            name="senha" value={formData.senha} onChange={handleChange} placeholder="Crie uma senha forte"
+                            className='w-[300px] md:w-[450px] xl:w-[500px] xl:!p-2 !p-1.5 !mt-4 border-2 border-gray-300' required/>
                     </div>
 
                     <button className='w-[100px] !p-1 !mt-5 bg-[#007bc0] text-white text-[18px] font-medium' type="submit">Cadastrar</button>
