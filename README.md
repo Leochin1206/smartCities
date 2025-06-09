@@ -23,16 +23,16 @@ cd smartCities
 
 ### 2. Instalação das dependências do Backend
 
-cd back
-py -m venv env
-env\Scripts\activate
-pip install -r requirements.txt
-py manage.py runserver
+- cd back
+- py -m venv env
+- env\Scripts\activate
+- pip install -r requirements.txt
+- py manage.py runserver
 
 
 
 ### 3. Instalação das dependências do Frontend
 
-cd front
-npm i
-npm run dev
+- cd front
+- npm i
+- npm run dev
