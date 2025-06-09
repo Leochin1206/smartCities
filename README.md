@@ -1,4 +1,4 @@
-# 🌐 Projeto Smart City - Back-End
+# 🌐 Projeto Smart City 
 
 Este projeto tem como objetivo simular uma **Cidade Inteligente** (Smart City) dentro do ambiente escolar da **Escola SENAI “Roberto Mange”**, utilizando sensores para capturar dados ambientais em tempo real como **temperatura**, **umidade**, **luminosidade** e **contador de pessoas**. Os dados são processados por uma **API RESTful desenvolvida com Django Rest Framework**, que permite o cadastro, listagem e filtragem de medições, sensores e ambientes.
 
