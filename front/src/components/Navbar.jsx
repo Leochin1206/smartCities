@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
+import LogoSC from "../assets/logo.png"
 
 import menu from "../assets/menu.svg";
 import history from "../assets/history.svg"
@@ -42,7 +43,7 @@ export function Navbar() {
   return (
     <nav className="text-[#3473BA]">
       <div className="sm:hidden !p-4 bg-white shadow-right flex justify-between items-center">
-        <div className="text-2xl font-bold">Smart City</div>
+        <img src={LogoSC} alt="Logo do Smart City" className="h-auto w-[17%]"/>
         <img
           src={menu}
           alt="Menu Hamburguer"
@@ -61,13 +62,13 @@ export function Navbar() {
         </ul>
       )}
 
-      <div className="hidden sm:flex flex-col w-39 h-[100vh] bg-white shadow-right !p-4 fixed top-0">
-        <div className="sm:text-[21px] md:text-[24px] font-bold sm:!mb-10">Smart City</div>
+      <div className="hidden items-center sm:flex flex-col w-39 h-[100vh] bg-white shadow-right !p-4 fixed top-0">
+        <img src={LogoSC} alt="Logo do Smart City" className="h-auto w-[80%] !mb-10"/>
         <ul className="flex flex-col gap-5">
           {linkNav.map((navRender, index) => (
             <Link key={index} to={navRender.link}>
               <li className="flex flex-col items-center justify-center hover:shadow-lg hover:scale-105 transition-all px-4 py-2 !p-1 rounded-md cursor-pointer">
-                <img src={navRender.img} alt={navRender.altImg} className="sm:w-[30px] md:w-[41px]"/>
+                <img src={navRender.img} alt={navRender.altImg} className="sm:w-[30px] md:w-[41px]" />
                 <p className="sm:text-[15px] md:text-[17px] !mt-0.5 font-medium">{navRender.titulo}</p>
               </li>
             </Link>
@@ -75,7 +76,7 @@ export function Navbar() {
 
           <Link to="/" onClick={() => { localStorage.removeItem("token"); setMenuOpen(false) }}>
             <li className="flex flex-col items-center justify-center hover:shadow-lg hover:scale-105 transition-all px-4 py-2 !p-1 rounded-md cursor-pointer">
-              <img src={logout} alt="Icone para localizar a saída da plataforma" className="sm:w-[30px] md:w-[41px]"/>
+              <img src={logout} alt="Icone para localizar a saída da plataforma" className="sm:w-[30px] md:w-[41px]" />
               <p className="sm:text-[15px] md:text-[17px] !mt-0.5 font-medium">Sair</p>
             </li>
           </Link>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import imgCadastro from "../assets/imgCadastro.jpg"
+import LogoSC from "../assets/logo.png"
 
 export function Cadastro() {
 
@@ -46,8 +47,6 @@ export function Cadastro() {
 
     return (
         <div className="flex flex-col items-center justify-center bg-[#faf9f9] h-[100vh] w-full">
-            <p className="text-4xl font-bold text-[#3473BA] !mb-10">Smart City</p>
-
 
             <form onSubmit={cadastrar} className="flex flex-col items-center justify-start h-110 w-[80%] lg:w-[87%] 2xl:w-[70%] lg:h-120 shadow-lg xl:h-150 bg-white lg:flex-row">
 
@@ -55,19 +54,20 @@ export function Cadastro() {
                     <img src={imgCadastro} alt="Imagem ilustrativa de uma cidade futurista" className='h-0 w-0 lg:w-auto lg:h-120 xl:h-150' />
                 </div>
                 <div className='flex flex-col items-center justify-center sm:w-[71%]'>
+                    <img src={LogoSC} alt="Logo do Smart City" className='h-auto w-[20%]' />
 
                     <h1 className='font-medium text-[26px] !mt-7'>Cadastro de Usuário</h1>
 
                     <div className='flex flex-col items-center justify-cente'>
                         <input id="usernameCadastro" type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Seu nome de usuário"
-                            className='w-[300px] md:w-[450px] xl:w-[500px] xl:!p-2 !p-1.5 !mt-4 border-2 border-gray-300' required/>
+                            className='w-[300px] md:w-[450px] xl:w-[500px] xl:!p-2 !p-1.5 !mt-4 border-2 border-gray-300' required />
 
                         <input id="emailCadastro" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="seuemail@exemplo.com"
-                            className='w-[300px] md:w-[450px] xl:w-[500px] xl:!p-2 !p-1.5 !mt-4 border-2 border-gray-300' required/>
+                            className='w-[300px] md:w-[450px] xl:w-[500px] xl:!p-2 !p-1.5 !mt-4 border-2 border-gray-300' required />
 
                         <input id="senhaCadastro" type="password"
                             name="senha" value={formData.senha} onChange={handleChange} placeholder="Crie uma senha forte"
-                            className='w-[300px] md:w-[450px] xl:w-[500px] xl:!p-2 !p-1.5 !mt-4 border-2 border-gray-300' required/>
+                            className='w-[300px] md:w-[450px] xl:w-[500px] xl:!p-2 !p-1.5 !mt-4 border-2 border-gray-300' required />
                     </div>
 
                     <button className='w-[100px] !p-1 !mt-5 bg-[#007bc0] text-white text-[18px] font-medium' type="submit">Cadastrar</button>

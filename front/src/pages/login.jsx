@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import imgLogin from "../assets/imgLogin.jpg";
 import { Link, useNavigate } from 'react-router-dom';
+import LogoSC from "../assets/logo.png"
 
 export function Login() {
     const [user, setUser] = useState('');
@@ -11,7 +12,7 @@ export function Login() {
 
     const logar = async (event) => {
         event.preventDefault();
-        setErrorMessage(''); 
+        setErrorMessage('');
 
         try {
             const response = await axios.post('http://127.0.0.1:8000/api/token/', {
@@ -34,13 +35,12 @@ export function Login() {
 
     return (
         <div className="flex flex-col items-center justify-center bg-[#faf9f9] h-[100vh] w-full">
-            <p className="text-4xl font-bold text-[#3473BA] !mb-10">Smart City</p>
-
             <div className="flex flex-col items-center justify-start h-auto py-10 w-[80%] lg:w-[87%] 2xl:w-[70%] lg:h-auto shadow-lg bg-white lg:flex-row">
                 <div>
                     <img src={imgLogin} alt="Imagem ilustrativa de uma cidade futurista" className='h-0 w-0 lg:w-auto lg:h-120 xl:h-150' />
                 </div>
                 <div className='flex flex-col items-center justify-center sm:w-[71%] px-4'>
+                    <img src={LogoSC} alt="Logo do Smart City" className='h-auto w-[17%] !mb-5' />
                     <h1 className='font-medium text-[26px] !mt-10 lg:!mt-0'>Login</h1>
 
                     <form onSubmit={logar} className="flex flex-col items-center w-full">
@@ -49,9 +49,9 @@ export function Login() {
                             id="usernameInput"
                             className='w-[300px] md:w-[450px] xl:w-[500px] xl:!p-2 !p-1.5 !mt-8 border-2 border-gray-300'
                             value={user}
-                            onChange={(e) => { setUser(e.target.value); if (errorMessage) setErrorMessage('');}}
+                            onChange={(e) => { setUser(e.target.value); if (errorMessage) setErrorMessage(''); }}
                             placeholder='Nome de Usuário'
-                            aria-label="Nome de Usuário" 
+                            aria-label="Nome de Usuário"
                         />
 
                         <label htmlFor="passwordInput" className="sr-only">Senha</label>
@@ -62,7 +62,7 @@ export function Login() {
                             onChange={(e) => { setPassword(e.target.value); if (errorMessage) setErrorMessage(''); }}
                             placeholder='Senha'
                             type="password"
-                            aria-label="Senha" 
+                            aria-label="Senha"
                         />
 
                         {errorMessage && (
